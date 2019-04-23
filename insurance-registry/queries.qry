@@ -1,0 +1,42 @@
+query selectOpenOffersToIndividual {
+  description: "Select all open offers to a private individual"
+  statement:
+    SELECT org.acme.insuranceregistry.InsuranceOffer
+      WHERE ((privateIndividual == _$privateIndividual) AND (status == 'pending'))
+}
+
+query selectAssetsOpenToInsurance {
+  description: "Select all assets that are open to receiving insurance offers"
+  statement:
+    SELECT org.acme.insuranceregistry.PrivateAsset
+      WHERE (status == 'open')
+}
+
+query selectPendingInsuranceOffersBy {
+  description: "Select all pending insurance offers by a specified insurance provider"
+  statement:
+    SELECT org.acme.insuranceregistry.InsuranceOffer
+      WHERE ((insuranceCompany == _$insuranceCompany) AND (status == 'pending'))
+}
+
+query selectAcceptedInsuranceOffersBy {
+  description: "Select all accepted insurance offers by a specified insurance provider"
+  statement:
+    SELECT org.acme.insuranceregistry.InsuranceOffer
+      WHERE ((insuranceCompany == _$insuranceCompany) AND (status == 'accepted'))
+}
+
+
+query selectAssets {
+  description: "Select all assets by asset"
+  statement:
+    SELECT org.acme.insuranceregistry.PrivateAsset
+      WHERE (id == _$id)
+}
+
+query selectAssetsByIndividual {
+  description: "Select all assets by asset"
+  statement:
+    SELECT org.acme.insuranceregistry.PrivateAsset
+      WHERE (privateIndividual == _$privateIndividual)
+}

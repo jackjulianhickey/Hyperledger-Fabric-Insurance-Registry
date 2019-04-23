@@ -1,0 +1,112 @@
+/**
+ * Business network model
+ */
+
+namespace org.acme.insuranceregistry
+
+participant PrivateIndividual identified by id {
+  o String id
+  o String name
+  o String address
+  --> InsuranceCompany insurer
+  o String status default = "open"
+  o Double balance
+  o Integer noClaimsYears default = 0
+}
+
+participant InsuranceCompany identified by id {
+  o String id
+  o String name
+  o Double balance default = 0.0
+}
+  
+participant Notary identified by id {
+  o String id
+  o String name
+  o String address
+  o Double balance default = 0.0
+}
+  
+participant RiskAnalysisParticipant identified by id {
+  o String id
+  o String name
+}
+  
+asset PrivateAsset identified by id {
+  o String id
+  o String description
+  o Double value
+  --> PrivateIndividual privateIndividual
+  o String status default = "open"
+  o Integer durationInMonths
+  o Double riskAnalysisScore default = 0.0
+  o Integer numInsuranceOffers default = 0
+}
+  
+asset Insurance identified by id {
+  o String id
+  --> PrivateAsset privateAsset
+  --> PrivateIndividual insured
+  --> InsuranceCompany insuranceCompany
+  o Double monthlyCost
+  o Integer durationInMonths
+}
+
+asset InsuranceOffer identified by id {
+  o String id
+  --> PrivateIndividual privateIndividual
+  --> InsuranceCompany insuranceCompany
+  --> PrivateAsset privateAsset
+  o Double monthlyCost
+  o Integer durationInMonths
+  o String status default = "pending"
+}
+
+asset Claim identified by id {
+  o String id
+  --> PrivateAsset privateAsset
+  --> PrivateIndividual privateIndividual
+  o String description
+  o String claimValue
+  o String status default = "pending"
+}
+
+transaction AcceptInsuranceOffer {
+  --> InsuranceOffer offer
+}
+
+transaction MakeInsuranceOffer {
+  --> PrivateIndividual privateIndividual
+  --> InsuranceCompany insuranceCompany
+  --> PrivateAsset privateAsset
+}
+  
+transaction ContractingInsurance {
+  --> PrivateIndividual insured
+  --> InsuranceCompany insuranceCompany
+  --> PrivateAsset privateAsset
+  o Double monthlyCost
+  o Integer durationInMonths
+}
+
+transaction RejectPendingOffers {
+  --> PrivateIndividual privateIndividual
+}
+
+transaction RiskAnalysis {
+  --> PrivateAsset privateAsset
+}
+
+transaction CreateNewAsset {
+  --> PrivateIndividual privateIndividual
+  o String description
+  o Double value
+  o Integer durationInMonths
+}
+
+transaction CreateClaim {
+  --> PrivateAsset privateAsset
+  --> PrivateIndividual privateIndividual
+  o String description
+  o String claimValue
+}
