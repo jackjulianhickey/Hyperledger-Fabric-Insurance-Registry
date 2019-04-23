@@ -32,12 +32,16 @@ export class HomepageItems extends Component {
         </Link>
       </button>
         <button>
-          <Link to={"/viewasset"} onClick={this.setAsset}>
+          <Link to={"/viewoffers"} onClick={this.setAsset}>
             View Offers
       </Link>
         </button>
       </div>
-      numOffers = <p>Insurance Offers: {this.props.asset.numOffers}</p>
+      if ( this.props.asset.numOffers == null ) {
+        numOffers = <p>Insurance Offers: 0</p>
+      } else {
+        numOffers = <p>Insurance Offers: {this.props.asset.numOffers}</p>
+      }
     }
     return (
       <Flippy

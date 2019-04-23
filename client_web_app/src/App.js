@@ -19,99 +19,137 @@ class App extends Component {
   }
 
   componentWillMount = () => {
-    this.getOffers()
     this.getAssets()
   }
 
   getAssets = () => {
     Client.search('queries/selectAssetsByIndividual?privateIndividual=resource%3Aorg.acme.insuranceregistry.PrivateIndividual%23' + this.state.name)
-    .then(data => {
-      console.log(data)
-      this.setState({
-        assets: data
-      })
-      for( let i = 0; i < this.state.assets.length; i++ ){
-        let privateIndividual = this.state.assets[i].privateIndividual.split('#')[1]
-        Client.search(`PrivateIndividual/${privateIndividual}`)
-          .then(data => {
-            let assets = this.state.assets
-            assets[i].ownerName = data.name
-            assets[i].numOffers = 0;
-            this.setState({
-              assets
+      .then(data => {
+        console.log(data)
+        this.setState({
+          assets: data
+        })
+        for (let i = 0; i < this.state.assets.length; i++) {
+
+          let privateIndividual = this.state.assets[i].privateIndividual.split('#')[1]
+          Client.search(`PrivateIndividual/${privateIndividual}`)
+            .then(data => {
+              let assets = this.state.assets
+              assets[i].ownerName = data.name
+              // assets[i].numOffers = null;
+              this.setState({
+                assets
+              })
             })
-          })
-      }
-    })
+        }
+        this.getOffers()
+      })
   }
 
   getOffers = () => {
     Client.search('queries/selectOpenOffersToIndividual?privateIndividual=resource%3Aorg.acme.insuranceregistry.PrivateIndividual%23' + this.state.name)
-    .then(data => {
-      this.setState({
-        offers: data
+      .then(data => {
+        this.setState({
+          offers: data
+        })
+        for (let i = 0; i < this.state.offers.length; i++) {
+          let privateIndividual = this.state.offers[i].privateIndividual.split('#')[1]
+          let privateAsset = this.state.offers[i].privateAsset.split('#')[1]
+          Client.search(`PrivateIndividual/${privateIndividual}`)
+            .then(data => {
+              let offers = this.state.offers
+              offers[i].ownerName = data.name
+              this.setState({
+                offers
+              })
+            })
+          Client.search(`PrivateAsset/${privateAsset}`)
+            .then(data => {
+              let offers = this.state.offers
+              offers[i].asset = data.description
+              this.setState({
+                offers
+              })
+
+            })
+        }
+        this.setNumInsuranceOffers();
       })
-      for( let i = 0; i < this.state.offers.length; i++ ){
-        let privateIndividual = this.state.offers[i].privateIndividual.split('#')[1]
-        let privateAsset = this.state.offers[i].privateAsset.split('#')[1]
-        Client.search(`PrivateIndividual/${privateIndividual}`)
-          .then(data => {
-            let offers = this.state.offers
-            offers[i].ownerName = data.name
-            this.setState({
-              offers
-            })
-          })
-        Client.search(`PrivateAsset/${privateAsset}`)
-          .then(data => {
-            let offers = this.state.offers
-            offers[i].asset = data.description
-            this.setState({
-              offers
-            })
-            
-          })
-      }
-    })
   }
 
-  acceptOffer = (offerID) => {
-    console.log(offerID)
+  setNumInsuranceOffers = () => {
+    for ( let i = 0; i < this.state.offers.length; i++ ) {
+      let privateAsset = this.state.offers[i].privateAsset.split('#')[1]
+      for ( let x = 0; x < this.state.assets.length; x++ ) {
+        let assets = this.state.assets
+        if ( assets[x].id === privateAsset ) {
+          if (assets[x].numOffers == null ) {
+            assets[x].numOffers = 1
+          } else {
+            assets[x].numOffers += 1
+          }
+          this.setState({
+            assets
+          })
+        }
+      }
+    }
+  }
+
+  acceptOffer = (offer) => {
     const data = {
       "$class": "org.acme.insuranceregistry.AcceptInsuranceOffer",
-      "offer": "org.acme.insuranceregistry.InsuranceOffer#" + offerID
+      "offer": "org.acme.insuranceregistry.InsuranceOffer#" + offer.id
     }
     Client.create('AcceptInsuranceOffer', data)
-    .then(() => {
-      this.getOffers()
-    })
+      .then(() => {
+        console.log(offer.asset)
+        const policyHolder = {
+          "$class": "org.acme.insuranceregistry.RejectPendingOffers",
+          "privateIndividual": "org.acme.insuranceregistry.PrivateIndividual#" + this.state.name,
+          "privateAsset": "org.acme.insuranceregistry.PrivateAsset#jack" + offer.asset
+        }
+        Client.create('rejectPendingOffers', policyHolder)
+      })
+      .then(() => {
+        let assets = this.state.assets
+        assets = []
+        this.setState({
+          assets
+        })
+        let offers = this.state.offers
+        this.setState({
+          offers
+        })
+        this.getAssets()
+      })
   }
 
   addAsset = (description, value, durationInMonths) => {
     const data = {
-        "$class": "org.acme.insuranceregistry.CreateNewAsset",
-        "privateIndividual": "org.acme.insuranceregistry.PrivateIndividual#" + this.state.name,
-        "description": description,
-        "value": Number(value),
-        "durationInMonths": Number(durationInMonths)      
+      "$class": "org.acme.insuranceregistry.CreateNewAsset",
+      "privateIndividual": "org.acme.insuranceregistry.PrivateIndividual#" + this.state.name,
+      "description": description,
+      "value": Number(value),
+      "durationInMonths": Number(durationInMonths)
     }
 
-        Client.create('CreateNewAsset', data)
-    .then(() => {
-      this.getAssets()
-    })
+    Client.create('CreateNewAsset', data)
+      .then(() => {
+        this.getAssets()
+      })
 
   }
 
   handlePrivateInputChange = e => {
-    const {name, value} = e.target
+    const { name, value } = e.target
     this.setState({
       [name]: value
     })
   }
 
   logout = async () => {
-    this.setState({login: false})
+    this.setState({ login: false })
   }
 
   handleAssetInputChange = e => {
@@ -122,7 +160,7 @@ class App extends Component {
   }
 
   submitRealEstate = () => {
-    const data =  {
+    const data = {
       "$class": "org.acme.landregistry.RealEstate",
       "id": this.state.id,
       "address": this.state.realEstateAddress,
@@ -132,36 +170,36 @@ class App extends Component {
     }
 
     Client.create('RealEstate', data)
-    .then(() => {
-      this.getRealEstate()
-    })
+      .then(() => {
+        this.getRealEstate()
+      })
   }
 
   render() {
 
     return (
       <Router>
-      <div className="App">
-        <div className = "container">
-        <Header logout={this.logout}/>
-        <Route exact path={"/"} render={props => (
-                  <React.Fragment>
-                    <h1>My Assets</h1>
-                    <Homepage assets={this.state.assets}/>
-                  </React.Fragment>
-                )}/>
-          <Route path={"/addAsset"} render={props => (
-                  <React.Fragment>
-                    <AddAsset addAsset={this.addAsset}/>
-                  </React.Fragment>
-                )}/>
-          <Route path={"/viewoffers"} render={props => (
-                  <React.Fragment>
-                    <ViewOffers offers={this.state.offers} acceptOffer={this.acceptOffer}/>
-                  </React.Fragment>
-                )}/>
-      </div>
-      </div>
+        <div className="App">
+          <div className="container">
+            <Header logout={this.logout} />
+            <Route exact path={"/"} render={props => (
+              <React.Fragment>
+                <h1>My Assets</h1>
+                <Homepage assets={this.state.assets} />
+              </React.Fragment>
+            )} />
+            <Route path={"/addAsset"} render={props => (
+              <React.Fragment>
+                <AddAsset addAsset={this.addAsset} />
+              </React.Fragment>
+            )} />
+            <Route path={"/viewoffers"} render={props => (
+              <React.Fragment>
+                <ViewOffers offers={this.state.offers} acceptOffer={this.acceptOffer} />
+              </React.Fragment>
+            )} />
+          </div>
+        </div>
       </Router>
     );
   }

@@ -15,7 +15,7 @@ class ViewOfferItems extends Component {
   }
 
   submit = () => {
-    this.props.acceptOffer(this.props.offer.id)
+    this.props.acceptOffer(this.props.offer)
   }
 
 

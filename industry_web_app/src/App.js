@@ -10,7 +10,7 @@ import ViewInsuredAssets from './components/pages/ViewInsuredAssets'
 class App extends Component {
 
   state = {
-    name: "aviva",
+    name: "laya",
     privates: [],
     assets: [],
     openAssets: [],

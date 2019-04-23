@@ -91,6 +91,7 @@ transaction ContractingInsurance {
 
 transaction RejectPendingOffers {
   --> PrivateIndividual privateIndividual
+  --> PrivateAsset privateAsset
 }
 
 transaction RiskAnalysis {
@@ -109,4 +110,9 @@ transaction CreateClaim {
   --> PrivateIndividual privateIndividual
   o String description
   o String claimValue
+}
+
+transaction ProcessClaim {
+  --> Claim processClaim
+  o String status
 }

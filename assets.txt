@@ -1,0 +1,50 @@
+{
+  "$class": "org.acme.insuranceregistry.InsuranceCompany",
+  "id": "aviva",
+  "name": "Aviva",
+  "balance": "0.0"
+}
+
+{
+  "$class": "org.acme.insuranceregistry.InsuranceCompany",
+  "id": "laya",
+  "name": "Laya",
+  "balance": "0.0"
+}
+
+{
+  "$class": "org.acme.insuranceregistry.PrivateIndividual",
+  "id": "jack",
+  "name": "Jack",
+  "address": "123 Sesame Street",
+  "insurer": "resource:org.acme.insuranceregistry.InsuranceCompany#aviva",
+  "status": "open",
+  "balance": 150000,
+  "noClaimsYears": "0"
+}
+
+{
+  "$class": "org.acme.insuranceregistry.PrivateIndividual",
+  "id": "steph",
+  "name": "Steph",
+  "address": "123 Sesame Street",
+  "insurer": "resource:org.acme.insuranceregistry.InsuranceCompany#laya",
+  "status": "open",
+  "balance": 15000,
+  "noClaimsYears": "0"
+}
+
+{
+  "$class": "org.acme.insuranceregistry.CreateClaim",
+  "privateAsset": "resource:org.acme.insuranceregistry.PrivateAsset#jackBike",
+  "privateIndividual": "resource:org.acme.insuranceregistry.PrivateIndividual#jack",
+  "description": "tis fucked",
+  "claimValue": "1000"
+}
+
+{
+  "$class": "org.acme.insuranceregistry.MakeInsuranceOffer",
+  "privateIndividual": "resource:org.acme.insuranceregistry.PrivateIndividual#jack",
+  "insuranceCompany": "resource:org.acme.insuranceregistry.InsuranceCompany#laya",
+  "privateAsset": "resource:org.acme.insuranceregistry.PrivateAsset#jackcar"
+}

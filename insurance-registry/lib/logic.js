@@ -7,7 +7,7 @@
  * @transaction
  */
 
- async function makeInsuranceOffer( insurance ){
+async function makeInsuranceOffer(insurance) {
     let assetRegistry = await getAssetRegistry('org.acme.insuranceregistry.InsuranceOffer');
 
     var factory = getFactory()
@@ -20,9 +20,9 @@
     insuranceOfferAsset.monthlyCost = (insurance.privateAsset.value * 0.1) / 12
 
     insurance.privateAsset.numInsuranceOffers += 1;
-      
+
     await assetRegistry.add(insuranceOfferAsset)
- }
+}
 
 
 /**
@@ -31,43 +31,44 @@
  * @transaction
  */
 
-async function acceptInsuranceOffer( offer ){
+async function acceptInsuranceOffer(offer) {
     let insuranceOfferAssetRegistry = await getAssetRegistry('org.acme.insuranceregistry.InsuranceOffer');
     let privateAssetRegistry = await getAssetRegistry('org.acme.insuranceregistry.PrivateAsset');
     let privateIndividualParticipantRegistry = await getParticipantRegistry('org.acme.insuranceregistry.PrivateIndividual');
     let insuranceCompanyParticipantRegistry = await getParticipantRegistry('org.acme.insuranceregistry.InsuranceCompany');
 
-        var costToDebit = offer.offer.monthlyCost;
-        
-        if ( offer.offer.privateIndividual.balance < costToDebit ) {
-            throw new Error('Not enough funds in balance')
-        }
-        offer.offer.privateIndividual.balance -= costToDebit
-        offer.offer.insuranceCompany.balance += costToDebit
-        offer.offer.status = "accepted";
-        offer.offer.privateAsset.status = "insured";
+    var costToDebit = offer.offer.monthlyCost;
 
-        await insuranceOfferAssetRegistry.update(offer.offer);
-        await privateAssetRegistry.update(offer.offer.privateAsset)
-        await privateIndividualParticipantRegistry.update(offer.offer.privateIndividual)
-        await insuranceCompanyParticipantRegistry.update(offer.offer.insuranceCompany)
-   
+    if (offer.offer.privateIndividual.balance < costToDebit) {
+        throw new Error('Not enough funds in balance')
+    }
+    offer.offer.privateIndividual.balance -= costToDebit
+    offer.offer.insuranceCompany.balance += costToDebit
+    offer.offer.status = "accepted";
+    offer.offer.privateAsset.status = "insured";
+
+    await insuranceOfferAssetRegistry.update(offer.offer);
+    await privateAssetRegistry.update(offer.offer.privateAsset)
+    await privateIndividualParticipantRegistry.update(offer.offer.privateIndividual)
+    await insuranceCompanyParticipantRegistry.update(offer.offer.insuranceCompany)
+
 }
 
 /**
  * Remove pending insurance offer
- * @param {org.acme.insuranceregistry.RejectPendingOffers} remove
+ * @param {org.acme.insuranceregistry.RejectPendingOffers} reject
  * @transaction
  */
 
-async function removePendingOffers( remove ) {
-    let individualResource = "resource:org.acme.insuranceregistry.PrivateIndividual#" + remove.privateIndividual.id;
+async function rejectPendingOffers(reject) {
+    let individualResource = "resource:org.acme.insuranceregistry.PrivateIndividual#" + reject.privateIndividual.id;
+    let privateAssetResource = "resource:org.acme.insuranceregistry.PrivateAsset#" + reject.privateAsset.id
     let assetRegistry = await getAssetRegistry('org.acme.insuranceregistry.InsuranceOffer');
-    let pendingOffers = await query('selectOpenOffersToIndividual', { privateIndividual: individualResource });
-    
+    let pendingOffers = await query('selectOpenAssetOffersToIndividual', { privateIndividual: individualResource, privateAsset: privateAssetResource });
+
     for (let n = 0; n < pendingOffers.length; n++) {
         pendingOffers[n].status = "rejected";
-        await assetRegistry.update(pendingOffers[n]);
+        await assetRegistry.update(pendingOffers[n]);        
     }
 }
 
@@ -76,7 +77,7 @@ async function removePendingOffers( remove ) {
  * @param {org.acme.insuranceregistry.RiskAnalysis} asset
  * @transaction
  */
-async function riskAnalysis( asset ) {
+async function riskAnalysis(asset) {
     let assetRegistry = await getAssetRegistry('org.acme.insuranceregistry.PrivateAsset');
     let score = 0
 
@@ -107,10 +108,10 @@ async function riskAnalysis( asset ) {
  * @param {org.acme.insuranceregistry.CreateNewAsset} asset
  * @transaction
  */
-async function createNewAsset( asset ) {
+async function createNewAsset(asset) {
     let assetRegistry = await getAssetRegistry('org.acme.insuranceregistry.PrivateAsset');
     var factory = getFactory()
-    
+
     var assetID = asset.privateIndividual.id + asset.description;
     var newAsset = factory.newResource('org.acme.insuranceregistry', 'PrivateAsset', assetID)
     newAsset.privateIndividual = asset.privateIndividual;
@@ -127,7 +128,7 @@ async function createNewAsset( asset ) {
  * @transaction
  */
 
-async function makeClaim( claim ){
+async function makeClaim(claim) {
     let assetRegistry = await getAssetRegistry('org.acme.insuranceregistry.Claim');
 
     var factory = getFactory()
@@ -137,6 +138,20 @@ async function makeClaim( claim ){
     newClaim.privateAsset = claim.privateAsset
     newClaim.description = claim.description
     newClaim.claimValue = claim.claimValue
-      
+
     await assetRegistry.add(newClaim)
- }
+}
+
+/**
+* Contracting an insurance offer
+* @param {org.acme.insuranceregistry.ProcessClaim} claim
+* @transaction
+*/
+
+async function makeClaim(claim) {
+    let assetRegistry = await getAssetRegistry('org.acme.insuranceregistry.Claim');
+
+    claim.processClaim.status = claim.status;
+
+    await assetRegistry.update(claim.processClaim);
+}

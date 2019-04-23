@@ -40,3 +40,10 @@ query selectAssetsByIndividual {
     SELECT org.acme.insuranceregistry.PrivateAsset
       WHERE (privateIndividual == _$privateIndividual)
 }
+
+query selectOpenAssetOffersToIndividual {
+  description: "Select all open offers to a private individual for a particular asset"
+  statement:
+    SELECT org.acme.insuranceregistry.InsuranceOffer
+      WHERE ((privateIndividual == _$privateIndividual) AND (status == 'pending') AND ((privateAsset == _$privateAsset)))
+}
