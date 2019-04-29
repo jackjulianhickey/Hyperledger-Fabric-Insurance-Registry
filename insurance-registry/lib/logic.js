@@ -1,5 +1,9 @@
 'use strict';
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
 
 /**
  * Contracting an insurance offer
@@ -129,6 +133,13 @@ async function createNewAsset(asset) {
  */
 
 async function makeClaim(claim) {
+    let assetResource = "resource:org.acme.insuranceregistry.PrivateAsset#" + claim.privateAsset.id;
+    let assetInsuranceOffer = await query('selectInsuranceCompanyByInsuredAsset', { privateAsset: assetResource });
+
+    await sleep(2000);
+
+    // throw new Error(assetInsuranceOffer[0].insuranceCompany)
+
     let assetRegistry = await getAssetRegistry('org.acme.insuranceregistry.Claim');
 
     var factory = getFactory()
@@ -136,6 +147,7 @@ async function makeClaim(claim) {
     var newClaim = factory.newResource('org.acme.insuranceregistry', 'Claim', claimId)
     newClaim.privateIndividual = claim.privateIndividual
     newClaim.privateAsset = claim.privateAsset
+    newClaim.insuranceCompany = assetInsuranceOffer[0].insuranceCompany
     newClaim.description = claim.description
     newClaim.claimValue = claim.claimValue
 
@@ -148,7 +160,7 @@ async function makeClaim(claim) {
 * @transaction
 */
 
-async function makeClaim(claim) {
+async function processClaim(claim) {
     let assetRegistry = await getAssetRegistry('org.acme.insuranceregistry.Claim');
 
     claim.processClaim.status = claim.status;

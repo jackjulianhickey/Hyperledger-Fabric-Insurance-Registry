@@ -1,0 +1,223 @@
+================================================================================
+==== Node Report ===============================================================
+
+Event: exception, location: "OnUncaughtException"
+Filename: node-report.20190428.213819.6741.001.txt
+Dump event time:  2019/04/28 21:38:19
+Module load time: 2019/04/28 14:16:56
+Process ID: 6741
+Command line: node /home/jack/.nvm/versions/node/v8.16.0/bin/composer network install --card PeerAdmin@hlfv1 --archiveFile insurance-registry@0.@0.3.9.bna 
+
+Node.js version: v8.16.0
+(http_parser: 2.8.0, v8: 6.2.414.77, uv: 1.23.2, zlib: 1.2.11, ares: 1.10.1-DEV,
+ modules: 57, nghttp2: 1.33.0, napi: 4, openssl: 1.0.2r, icu: 60.1, unicode: 10.0,
+ cldr: 32.0, tz: 2017c)
+
+node-report version: 2.2.1 (built against Node.js v8.16.0, glibc 2.27, 64 bit)
+
+OS version: Linux 4.18.0-18-generic #19~18.04.1-Ubuntu SMP Fri Apr 5 10:22:13 UTC 2019
+(glibc: 2.27)
+
+Machine: jack-XPS-15-9550 x86_64
+
+================================================================================
+==== JavaScript Stack Trace ====================================================
+
+WriteStream.emit (events.js:183:7)
+onwriteError (_stream_writable.js:417:12)
+onwrite (_stream_writable.js:439:5)
+_destroy (internal/streams/destroy.js:39:7)
+WriteStream.Socket._destroy (net.js:568:3)
+WriteStream.destroy (internal/streams/destroy.js:32:8)
+WriteWrap.afterWrite [as oncomplete] (net.js:870:10)
+
+================================================================================
+==== Native Stack Trace ========================================================
+
+ 0: [pc=0x7fbf30b1f09b] nodereport::OnUncaughtException(v8::Isolate*) [/home/jack/.nvm/versions/node/v8.16.0/lib/node_modules/composer-cli/node_modules/node-report/api.node]
+ 1: [pc=0xeb13e2] v8::internal::Isolate::Throw(v8::internal::Object*, v8::internal::MessageLocation*) [node]
+ 2: [pc=0x102acdd] v8::internal::Runtime_Throw(int, v8::internal::Object**, v8::internal::Isolate*) [node]
+ 3: [pc=0x1785f03042fd] 
+
+================================================================================
+==== JavaScript Heap and Garbage Collector =====================================
+
+Heap space name: new_space
+    Memory size: 3,670,016 bytes, committed memory: 3,650,248 bytes
+    Capacity: 3,609,088 bytes, used: 2,138,720 bytes, available: 1,470,368 bytes
+Heap space name: old_space
+    Memory size: 48,033,792 bytes, committed memory: 47,282,816 bytes
+    Capacity: 47,003,352 bytes, used: 45,737,488 bytes, available: 1,265,864 bytes
+Heap space name: code_space
+    Memory size: 2,097,152 bytes, committed memory: 1,632,096 bytes
+    Capacity: 1,855,424 bytes, used: 1,565,184 bytes, available: 290,240 bytes
+Heap space name: map_space
+    Memory size: 5,263,360 bytes, committed memory: 5,020,400 bytes
+    Capacity: 4,925,448 bytes, used: 4,858,128 bytes, available: 67,320 bytes
+Heap space name: large_object_space
+    Memory size: 3,911,680 bytes, committed memory: 3,911,680 bytes
+    Capacity: 1,440,337,344 bytes, used: 3,858,368 bytes, available: 1,436,478,976 bytes
+
+Total heap memory size: 62,976,000 bytes
+Total heap committed memory: 61,497,240 bytes
+Total used heap memory: 58,157,888 bytes
+Total available heap memory: 1,439,572,768 bytes
+
+Heap memory limit: 1,501,560,832
+
+================================================================================
+==== Resource Usage ============================================================
+
+Process total resource usage:
+  User mode CPU: 1.314293 secs
+  Kernel mode CPU: 0.090235 secs
+  Average CPU Consumption : 0.00530351%
+  Maximum resident set size: 127,131,648 bytes
+  Page faults: 11 (I/O required) 42297 (no I/O required)
+  Filesystem activity: 1672 reads 16 writes
+
+Event loop thread resource usage:
+  User mode CPU: 1.093476 secs
+  Kernel mode CPU: 0.075003 secs
+  Average CPU Consumption : 0.00441219%
+  Filesystem activity: 1672 reads 16 writes
+
+================================================================================
+==== Node.js libuv Handle Summary ==============================================
+
+(Flags: R=Ref, A=Active)
+Flags  Type      Address             Details
+[-A]   async     0x0000000003f97e80  
+[--]   check     0x00007ffd2f80a830  
+[R-]   idle      0x00007ffd2f80a8a8  
+[--]   prepare   0x00007ffd2f80a920  
+[--]   check     0x00007ffd2f80a998  
+[-A]   async     0x0000000002186780  
+[R-]   timer     0x0000000003fc62b0  repeat: 0, timeout expired: 26815322 ms ago
+[R-]   tty       0x0000000003fa0758  , file descriptor: 9, write queue size: 0, readable, writable
+[-A]   signal    0x0000000003fc5ed0  signum: 28 (SIGWINCH)
+[R-]   tty       0x0000000003fc6028  , write queue size: 0
+[-A]   async     0x00007fbf30d27ce0  
+[-A]   signal    0x0000000003fdb230  signum: 6 (SIGABRT)
+[-A]   signal    0x0000000004014b10  signum: 14 (SIGALRM)
+[-A]   signal    0x0000000003ff8720  signum: 1 (SIGHUP)
+[-A]   signal    0x0000000004037dc0  signum: 2 (SIGINT)
+[-A]   signal    0x00000000040d4450  signum: 15 (SIGTERM)
+[-A]   signal    0x00000000040d4540  signum: 26 (SIGVTALRM)
+[-A]   signal    0x00000000040d4630  signum: 24 (SIGXCPU)
+[-A]   signal    0x00000000040d4720  signum: 25 (SIGXFSZ)
+[-A]   signal    0x00000000040d4810  signum: 12 (SIGUSR2)
+[-A]   signal    0x00000000040d4900  signum: 5 (SIGTRAP)
+[-A]   signal    0x00000000040d49f0  signum: 31 (SIGSYS)
+[-A]   signal    0x00000000040d4ae0  signum: 3 (SIGQUIT)
+[-A]   signal    0x000000000401dd90  signum: 6 (SIGABRT)
+[-A]   signal    0x00000000040c0ff0  signum: 29 (SIGIO)
+[-A]   signal    0x0000000003fc6c60  signum: 29 (SIGIO)
+[-A]   signal    0x00000000040d6010  signum: 30 (SIGPWR)
+[-A]   signal    0x00000000040327e0  signum: 16 (SIGSTKFLT)
+[-A]   signal    0x0000000004093bb0  signum: 31 (SIGSYS)
+[RA]   timer     0x00000000040341a0  repeat: 0, timeout in: 80 ms
+[--]   timer     0x0000000004016cc8  repeat: 0, timeout expired: 26475083 ms ago
+[R-]   timer     0x0000000003ff8410  repeat: 0, timeout in: 7020949565773068555 ms
+[-A]   async     0x00007fbf227f8a58  
+[R-]   timer     0x0000000003ff8850  repeat: 0, timeout in: 3343204121386301720 ms
+[R-]   prepare   0x00007fbf227f8980  
+[-A]   async     0x00007fbf2c0017f0  
+[-A]   async     0x00007fbf28006d80  
+[-A]   async     0x00007fbf240066e0  
+[-A]   async     0x00007fbf2c005b20  
+[R-]   timer     0x00007fbf2c00a140  repeat: 0, timeout expired: 26815322 ms ago
+[--]   timer     0x00007fbf2400ee20  repeat: 0, timeout expired: 26478069 ms ago
+[-A]   async     0x00007fbf2c004560  
+[-A]   timer     0x000000000408d970  repeat: 0, timeout in: 5000 ms
+
+================================================================================
+==== System Information ========================================================
+
+Environment variables
+  CLUTTER_IM_MODULE=xim
+  NVM_DIR=/home/jack/.nvm
+  LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+  LESSCLOSE=/usr/bin/lesspipe %s %s
+  XDG_MENU_PREFIX=gnome-
+  LANG=en_GB.UTF-8
+  DISPLAY=:0
+  GNOME_SHELL_SESSION_MODE=ubuntu
+  COLORTERM=truecolor
+  NVM_CD_FLAGS=
+  USERNAME=jack
+  XDG_VTNR=2
+  SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+  XDG_SESSION_ID=2
+  USER=jack
+  DESKTOP_SESSION=ubuntu
+  QT4_IM_MODULE=xim
+  TEXTDOMAINDIR=/usr/share/locale/
+  GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/e1881c36_46f6_4cc4_a77e_798bba2e94fa
+  PWD=/home/jack/FYP/Insurance-Registry/insurance-registry
+  HOME=/home/jack
+  TEXTDOMAIN=im-config
+  SSH_AGENT_PID=3576
+  QT_ACCESSIBILITY=1
+  XDG_SESSION_TYPE=x11
+  XDG_DATA_DIRS=/usr/share/ubuntu:/usr/local/share:/usr/share:/var/lib/snapd/desktop
+  XDG_SESSION_DESKTOP=ubuntu
+  GJS_DEBUG_OUTPUT=stderr
+  GTK_MODULES=gail:atk-bridge
+  WINDOWPATH=2
+  TERM=xterm-256color
+  SHELL=/bin/bash
+  VTE_VERSION=5202
+  QT_IM_MODULE=xim
+  XMODIFIERS=@im=ibus
+  IM_CONFIG_PHASE=2
+  NVM_BIN=/home/jack/.nvm/versions/node/v8.16.0/bin
+  XDG_CURRENT_DESKTOP=ubuntu:GNOME
+  GPG_AGENT_INFO=/run/user/1000/gnupg/S.gpg-agent:0:1
+  GNOME_TERMINAL_SERVICE=:1.72
+  XDG_SEAT=seat0
+  SHLVL=1
+  LANGUAGE=en_GB:en
+  GDMSESSION=ubuntu
+  GNOME_DESKTOP_SESSION_ID=this-is-deprecated
+  LOGNAME=jack
+  DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+  XDG_RUNTIME_DIR=/run/user/1000
+  XAUTHORITY=/run/user/1000/gdm/Xauthority
+  XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
+  PATH=/home/jack/.nvm/versions/node/v8.16.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+  GJS_DEBUG_TOPICS=JS ERROR;JS LOG
+  SESSION_MANAGER=local/jack-XPS-15-9550:@/tmp/.ICE-unix/3481,unix/jack-XPS-15-9550:/tmp/.ICE-unix/3481
+  LESSOPEN=| /usr/bin/lesspipe %s
+  GTK_IM_MODULE=ibus
+  OLDPWD=/home/jack/FYP/Insurance-Registry
+  _=/home/jack/.nvm/versions/node/v8.16.0/bin/composer
+  SUPPRESS_NO_CONFIG_WARNING=y
+  GRPC_SSL_CIPHER_SUITES=ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384
+
+Resource limits                        soft limit      hard limit
+  core file size (blocks)                       0       unlimited
+  data seg size (kbytes)                unlimited       unlimited
+  file size (blocks)                    unlimited       unlimited
+  max locked memory (bytes)              16777216        16777216
+  max memory size (kbytes)              unlimited       unlimited
+  open files                                 4096            4096
+  stack size (bytes)                      8388608       unlimited
+  cpu time (seconds)                    unlimited       unlimited
+  max user processes                        31042           31042
+  virtual memory (kbytes)               unlimited       unlimited
+
+Loaded libraries
+  linux-vdso.so.1
+  /lib/x86_64-linux-gnu/libdl.so.2
+  /lib/x86_64-linux-gnu/librt.so.1
+  /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+  /lib/x86_64-linux-gnu/libm.so.6
+  /lib/x86_64-linux-gnu/libgcc_s.so.1
+  /lib/x86_64-linux-gnu/libpthread.so.0
+  /lib/x86_64-linux-gnu/libc.so.6
+  /lib64/ld-linux-x86-64.so.2
+  /home/jack/.nvm/versions/node/v8.16.0/lib/node_modules/composer-cli/node_modules/node-report/api.node
+  /home/jack/.nvm/versions/node/v8.16.0/lib/node_modules/composer-cli/node_modules/grpc/src/node/extension_binary/node-v57-linux-x64-glibc/grpc_node.node
+
+================================================================================

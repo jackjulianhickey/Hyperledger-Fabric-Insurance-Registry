@@ -66,6 +66,7 @@ asset Claim identified by id {
   o String id
   --> PrivateAsset privateAsset
   --> PrivateIndividual privateIndividual
+  --> InsuranceCompany insuranceCompany
   o String description
   o String claimValue
   o String status default = "pending"

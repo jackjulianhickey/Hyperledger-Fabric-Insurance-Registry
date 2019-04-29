@@ -47,3 +47,10 @@ query selectOpenAssetOffersToIndividual {
     SELECT org.acme.insuranceregistry.InsuranceOffer
       WHERE ((privateIndividual == _$privateIndividual) AND (status == 'pending') AND ((privateAsset == _$privateAsset)))
 }
+
+query selectInsuranceCompanyByInsuredAsset {
+  description: "Select an insurance company by an insured asset"
+  statement:
+    SELECT org.acme.insuranceregistry.InsuranceOffer
+      WHERE ((privateAsset == _$privateAsset) AND (status == 'accepted'))
+}
