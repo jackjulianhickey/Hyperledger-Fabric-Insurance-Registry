@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 
-class NewBlogForm extends Component{
+class AddAssetForm extends Component{
 
   render() {
     return (
@@ -64,7 +64,7 @@ const titleStyle = {
   width: '50%'
 }
 //PropTypes
-NewBlogForm.propTypes = {
+AddAssetForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   description: PropTypes.string.isRequired,
@@ -72,4 +72,4 @@ NewBlogForm.propTypes = {
   durationInMonths: PropTypes.string.isRequired
 }
 
-export default NewBlogForm
+export default AddAssetForm

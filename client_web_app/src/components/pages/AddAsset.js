@@ -3,7 +3,7 @@ import AddAssetForm from './AddAssetForm'
 import PropTypes from 'prop-types';
 
 
-class NewBlog extends Component{
+class AddAsset extends Component{
   state = {
     description: '',
     value: '',
@@ -44,8 +44,8 @@ const titleStyle = {
   width: '50%'
 }
 //PropTypes
-NewBlog.propTypes = {
+AddAsset.propTypes = {
   addAsset: PropTypes.func.isRequired
 }
 
-export default NewBlog
+export default AddAsset

@@ -6,6 +6,7 @@ import Client from './Client'
 import Homepage from './components/pages/Homepage'
 import AddAsset from './components/pages/AddAsset'
 import ViewOffers from './components/pages/ViewOffers'
+import NewClaim from './components/pages/NewClaim'
 
 class App extends Component {
 
@@ -15,6 +16,7 @@ class App extends Component {
     assets: [],
     openAssets: [],
     offers: [],
+    insuredItems: [],
     login: true
   }
 
@@ -94,7 +96,20 @@ class App extends Component {
         }
       }
     }
+    this.getInsuredItems();
   }
+
+  getInsuredItems = () => {
+    for (let i = 0; i < this.state.assets.length; i++) {
+        // console.log(this.props.assets[i])
+        if (this.state.assets[i].status == "insured") {
+            console.log(this.state.assets[i])
+            let insuredItems = this.state.assets[i]
+            this.setState({insuredItems: [...this.state.insuredItems, insuredItems ]
+            })
+        }
+    }
+}
 
   acceptOffer = (offer) => {
     const data = {
@@ -175,6 +190,11 @@ class App extends Component {
       })
   }
 
+  createNewClaim = (asset, description, value) => {
+    console.log("Asset: ", asset, "Description: ", description, "Value: ", value)
+
+  }
+
   render() {
 
     return (
@@ -196,6 +216,11 @@ class App extends Component {
             <Route path={"/viewoffers"} render={props => (
               <React.Fragment>
                 <ViewOffers offers={this.state.offers} acceptOffer={this.acceptOffer} />
+              </React.Fragment>
+            )} />
+            <Route path={"/claims"} render={props => (
+              <React.Fragment>
+                <NewClaim assets={this.state.insuredItems} newClaim={this.createNewClaim} />
               </React.Fragment>
             )} />
           </div>
