@@ -1,27 +1,37 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import AddAsset from './AddAsset';
+// import Select from 'react-select'
 
 
 class NewClaimForm extends Component {
 
+    list_items = []
+    createSelectItems() {
+        let items = [];
+        items.push(<option key="default" value="">Select asset type</option>)
+        for (let i = 0; i < this.props.userassets.length; i++) {
+            items.push(<option key={i} value={this.props.userassets[i].id}>{this.props.userassets[i].description}</option>);
 
+            //here I will be creating my options dynamically based on
+            //what props are currently passed to the parent component
+        }
+        return items;
+    }
 
     render() {
+
         return (
             <form onSubmit={this.props.onSubmit} style={{ display: 'block', background: '#5B5B5B' }}>
                 <div>
                     <select
-                        type={"select"}
+                        type={"text"}
                         name={"asset"}
                         style={titleStyle}
-                        placeholder={"Select Asset"}
+                        placeholder={"Select an insured asset"}
                         value={this.props.asset}
                         onChange={this.props.onChange}>
-                        {this.props.userassets.map(asset => (
-                            <option key={asset.id} value={asset.id}>
-                                {asset.description}
-                            </option>
-                        ))}
+                        {this.createSelectItems()}
                     </select>
                 </div>
                 <div>
@@ -36,10 +46,10 @@ class NewClaimForm extends Component {
                 <div>
                     <input
                         type={"text"}
-                        name={"durationInMonths"}
+                        name={"description"}
                         style={titleStyle}
-                        placeholder={"Enter how long you want this asset insured for"}
-                        value={this.props.durationInMonths}
+                        placeholder={"Please describe what you are claiming for"}
+                        value={this.props.description}
                         onChange={this.props.onChange} />
                 </div>
                 <div>
@@ -51,6 +61,7 @@ class NewClaimForm extends Component {
                     />
                 </div>
             </form>
+
         );
     }
 

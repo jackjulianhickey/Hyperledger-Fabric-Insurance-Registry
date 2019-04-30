@@ -2,44 +2,50 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 
-class AddAssetForm extends Component{
+class AddAssetForm extends Component {
 
   render() {
     return (
       <form onSubmit={this.props.onSubmit} style={{ display: 'block', background: '#5B5B5B' }}>
         <div>
-          <input
+          <select
             type={"text"}
             name={"description"}
             style={titleStyle}
             placeholder={"Enter description eg: car, house, bikes"}
             value={this.props.description}
-            onChange={this.props.onChange}/>
+            onChange={this.props.onChange}>
+            <option value="DEFAULT">Select asset type</option>
+            <option value="House">House</option>
+            <option value={"Car"}>Car</option>
+            <option value={"Phone"}>Phone</option>
+            <option value={"Travel"}>Travel</option>
+          </select>
         </div>
         <div>
-        <input
+          <input
             type={"text"}
             name={"value"}
             style={titleStyle}
             placeholder={"Enter value"}
             value={this.props.value}
-            onChange={this.props.onChange}/>
+            onChange={this.props.onChange} />
         </div>
         <div>
-        <input
+          <input
             type={"text"}
             name={"durationInMonths"}
             style={titleStyle}
             placeholder={"Enter how long you want this asset insured for"}
             value={this.props.durationInMonths}
-            onChange={this.props.onChange}/>
+            onChange={this.props.onChange} />
         </div>
         <div>
           <input
             type="submit"
             value="Submit"
             className="btn"
-            style={{flex: '1', background: '#333', marginLeft: '50%'}}
+            style={{ flex: '1', background: '#333', marginLeft: '50%' }}
           />
         </div>
       </form>

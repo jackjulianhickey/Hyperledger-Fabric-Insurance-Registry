@@ -6,6 +6,8 @@ import Client from './Client'
 import Homepage from './components/pages/Homepage'
 import InsureAsset from './components/pages/InsureAsset'
 import ViewInsuredAssets from './components/pages/ViewInsuredAssets'
+import Claims from './components/pages/Claims'
+import ProcessClaim from './components/pages/ProcessClaim'
 
 class App extends Component {
 
@@ -16,14 +18,17 @@ class App extends Component {
     openAssets: [],
     insuredAssets: [],
     login: true,
-    selectedAsset: {}
+    selectedAsset: {},
+    claims: [],
+    selectedClaim: {},
   }
 
   componentWillMount = () => {
     this.getPrivateIndividual()
     // this.getAssets()
-    this.getAssetsOpenToInsurance()
+    this.getAssetsOpenToInsurance();
     this.getInsuredAssets();
+    this.getClaims();
   }
 
   getPrivateIndividual = () => {
@@ -65,6 +70,17 @@ class App extends Component {
     }
     console.log(data)
     Client.create('MakeInsuranceOffer', data);
+  }
+
+  processClaim = async (status, claimID) => {
+    const data = {
+      "$class": "org.acme.insuranceregistry.ProcessClaim",
+      "processClaim": "org.acme.insuranceregistry.Claim#" + claimID,
+      "status": status
+    }
+
+    Client.create('ProcessClaim', data)
+
   }
 
   getAssetsOpenToInsurance = () => {
@@ -126,6 +142,42 @@ class App extends Component {
 
   }
 
+  getClaims = () => {
+    Client.search(`queries/selectClaimsByInsuranceCompany?insuranceCompany=resource%3Aorg.acme.insuranceregistry.InsuranceCompany%23${this.state.name}`)
+      .then(data => {
+        this.setState({
+          claims: data
+        })
+        for (let i = 0; i < this.state.claims.length; i++) {
+          let privateIndividual = this.state.claims[i].privateIndividual.split('#')[1];
+          Client.search(`PrivateIndividual/${privateIndividual}`)
+            .then(data => {
+              console.log(data);
+              let claims = this.state.claims;
+              claims[i].ownerName = data.name;
+              this.setState({
+                claims
+              })
+            })
+        }
+
+        for (let i = 0; i < this.state.claims.length; i++) {
+          let privateAsset = this.state.claims[i].privateAsset.split('#')[1];
+          Client.search(`PrivateAsset/${privateAsset}`)
+            .then(data => {
+              console.log(data);
+              let claims = this.state.claims;
+              claims[i].assetType = data.description;
+              claims[i].totalValue = data.value;
+              this.setState({
+                claims
+              })
+            })
+        }
+      })
+
+  }
+
   handlePrivateInputChange = e => {
     const { name, value } = e.target
     this.setState({
@@ -156,6 +208,17 @@ class App extends Component {
 
   }
 
+  selectedClaim = async (claimID) => {
+    for (let i = 0; i < this.state.claims.length; i++) {
+      console.log(this.state.claims[i].id)
+      if (this.state.claims[i].id === claimID) {
+        await this.setState({ selectedClaim: this.state.claims[i] })
+        console.log(this.state.selectedClaim)
+        break;
+      }
+    }
+
+  }
 
   render() {
     var openAssetsEmpty;
@@ -183,6 +246,16 @@ class App extends Component {
             <Route path={"/insuredassets"} render={props => (
               <React.Fragment>
                 <ViewInsuredAssets insuredAssets={this.state.insuredAssets} />
+              </React.Fragment>
+            )} />
+            <Route path={"/claims"} render={props => (
+              <React.Fragment>
+                <Claims Claims={this.state.claims} selectedClaim = {this.selectedClaim} />
+              </React.Fragment>
+            )} />
+            <Route path={"/processclaim"} render={props => (
+              <React.Fragment>
+                <ProcessClaim Claim={this.state.selectedClaim} ProcessClaim = {this.processClaim} />
               </React.Fragment>
             )} />
           </div>

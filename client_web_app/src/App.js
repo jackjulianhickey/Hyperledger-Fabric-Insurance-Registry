@@ -12,16 +12,34 @@ class App extends Component {
 
   state = {
     name: "jack",
+    user: {},
     privates: [],
     assets: [],
     openAssets: [],
     offers: [],
     insuredItems: [],
+    claims: [],
     login: true
   }
 
   componentWillMount = () => {
     this.getAssets()
+    this.getClaims()
+    this.getUser();
+  }
+
+  sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  getUser = () => {
+    Client.search('PrivateIndividual/' + this.state.name)
+      .then(data => {
+        console.log(data)
+        this.setState({
+          user: data
+        })
+      })
   }
 
   getAssets = () => {
@@ -45,6 +63,16 @@ class App extends Component {
             })
         }
         this.getOffers()
+      })
+  }
+
+  getClaims = () => {
+    Client.search('queries/selectClaimsByPrivateIndividual?privateIndividual=resource%3Aorg.acme.insuranceregistry.PrivateIndividual%23' + this.state.name)
+      .then(data => {
+        console.log(data)
+        this.setState({
+          claims: data
+        })
       })
   }
 
@@ -150,7 +178,10 @@ class App extends Component {
     }
 
     Client.create('CreateNewAsset', data)
-      .then(() => {
+      .then((err) => {
+        if (err) {
+          console.log(err)
+        }
         this.getAssets()
       })
 
@@ -192,6 +223,21 @@ class App extends Component {
 
   createNewClaim = (asset, description, value) => {
     console.log("Asset: ", asset, "Description: ", description, "Value: ", value)
+    var claimValue = parseFloat(value)
+    console.log(claimValue)
+
+    const data = {
+      "$class": "org.acme.insuranceregistry.CreateClaim",
+      "privateAsset": "org.acme.insuranceregistry.PrivateAsset#" + asset,
+      "privateIndividual": "org.acme.insuranceregistry.PrivateIndividual#" + this.state.name,
+      "description": description,
+      "claimValue": claimValue
+    }
+
+    Client.create('CreateClaim', data)
+      // .then(() => {
+      //   this.getAssets()
+      // })
 
   }
 
@@ -205,7 +251,7 @@ class App extends Component {
             <Route exact path={"/"} render={props => (
               <React.Fragment>
                 <h1>My Assets</h1>
-                <Homepage assets={this.state.assets} />
+                <Homepage assets={this.state.assets} user = {this.state.user}/>
               </React.Fragment>
             )} />
             <Route path={"/addAsset"} render={props => (

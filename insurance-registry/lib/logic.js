@@ -159,11 +159,22 @@ async function makeClaim(claim) {
 * @param {org.acme.insuranceregistry.ProcessClaim} claim
 * @transaction
 */
-
 async function processClaim(claim) {
-    let assetRegistry = await getAssetRegistry('org.acme.insuranceregistry.Claim');
+    let claimsAssetRegistry = await getAssetRegistry('org.acme.insuranceregistry.Claim');
+    let privateIndividualParticipantRegistry = await getParticipantRegistry('org.acme.insuranceregistry.PrivateIndividual');
 
-    claim.processClaim.status = claim.status;
+    if ( claim.status == "denied" ) {
+        claim.processClaim.status = claim.status
+        await claimsAssetRegistry.update( claim.processClaim )
+        return true
+    }
 
-    await assetRegistry.update(claim.processClaim);
+    var costToPay = claim.processClaim.claimValue;
+    claim.processClaim.privateIndividual.balance += costToPay;
+    claim.processClaim.status = claim.status
+
+    await claimsAssetRegistry.update(claim.processClaim);
+    await privateIndividualParticipantRegistry.update(claim.processClaim.privateIndividual);
+    return true
+
 }

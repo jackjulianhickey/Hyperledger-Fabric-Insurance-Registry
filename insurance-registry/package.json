@@ -3,7 +3,7 @@
     "composer": "^0.20.7"
   },
   "name": "insurance-registry",
-  "version": "0.3.26",
+  "version": "0.3.32",
   "description": "insurance-registry network for FYP",
   "scripts": {
     "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/insurance-registry.bna",

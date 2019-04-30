@@ -68,7 +68,7 @@ asset Claim identified by id {
   --> PrivateIndividual privateIndividual
   --> InsuranceCompany insuranceCompany
   o String description
-  o String claimValue
+  o Double claimValue
   o String status default = "pending"
 }
 
@@ -110,7 +110,7 @@ transaction CreateClaim {
   --> PrivateAsset privateAsset
   --> PrivateIndividual privateIndividual
   o String description
-  o String claimValue
+  o Double claimValue
 }
 
 transaction ProcessClaim {

@@ -54,3 +54,17 @@ query selectInsuranceCompanyByInsuredAsset {
     SELECT org.acme.insuranceregistry.InsuranceOffer
       WHERE ((privateAsset == _$privateAsset) AND (status == 'accepted'))
 }
+
+query selectClaimsByPrivateIndividual {
+  description: "Select all claims by private individual"
+  statement:
+    SELECT org.acme.insuranceregistry.Claim
+      WHERE ((privateIndividual == _$privateIndividual))
+}
+
+query selectClaimsByInsuranceCompany {
+  description: "Select all claims by insurance company where status is pending"
+  statement:
+    SELECT org.acme.insuranceregistry.Claim
+      WHERE ((insuranceCompany == _$insuranceCompany) AND (status == 'pending'))
+}
