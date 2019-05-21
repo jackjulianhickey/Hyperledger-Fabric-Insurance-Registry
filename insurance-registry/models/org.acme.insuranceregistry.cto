@@ -8,8 +8,6 @@ participant PrivateIndividual identified by id {
   o String id
   o String name
   o String address
-  --> InsuranceCompany insurer
-  o String status default = "open"
   o Double balance
   o Integer noClaimsYears default = 0
 }
@@ -18,6 +16,7 @@ participant InsuranceCompany identified by id {
   o String id
   o String name
   o Double balance default = 0.0
+  o Integer insuranceContracts default = 0
 }
   
 participant Notary identified by id {

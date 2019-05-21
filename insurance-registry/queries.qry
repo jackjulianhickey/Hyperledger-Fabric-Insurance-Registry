@@ -68,3 +68,9 @@ query selectClaimsByInsuranceCompany {
     SELECT org.acme.insuranceregistry.Claim
       WHERE ((insuranceCompany == _$insuranceCompany) AND (status == 'pending'))
 }
+
+query selectAllRiskAnalysisScores {
+  description: "Select all private assets"
+  statement:
+    SELECT org.acme.insuranceregistry.PrivateAsset
+}

@@ -20,14 +20,15 @@ class InsureAssets extends Component {
 
     dataStyle = () => {
         return {
-          background: '#5B5B5B',
+          background: '#333',
           position: 'absolute',
-          height: '90%',
+          width: '40%',
+          // height: '90%',
           padding: '10px',
-          bottom: '10px',
-          right: '10px',
+          top: '15%',
+          // bottom: '10px',
+          // right: '10px',
           fontSize: '30px',
-          top: '90px',
           overflowY: 'auto',
           color: 'white'
         }
@@ -38,7 +39,7 @@ class InsureAssets extends Component {
         return (
           <div style={this.dataStyle()}><p>Asset Description: {this.props.selectedAsset.description}</p>
           <p>Asset Value: {this.props.selectedAsset.value}</p>
-          <p>Risk Associated: {this.props.selectedAsset.riskAnalysisScore}</p>
+          <p>Risk Score (Higher is Better): {this.props.selectedAsset.riskAnalysisScore}</p>
           <p>Length of Requested Insurance: {this.props.selectedAsset.durationInMonths} </p>
           
           <InsureAssetForm onSubmit={this.onSubmit} onChange={this.onChange} privateIndividual={this.state.privateIndividual} privateAsset={this.state.privateAsset} asset={this.props.selectedAsset}/>

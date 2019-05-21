@@ -5,9 +5,15 @@ import ViewInsuredAssetsItems from './ViewInsuredAssetsItems'
 
 class ViewInsuredAssets extends Component {
   render() {
-    return this.props.insuredAssets.map((asset) => (
-      <ViewInsuredAssetsItems key = {asset.id} asset = {asset}/>
-    ));
+    return (
+      <div>
+      <h1>Insured Assets</h1>
+        <div>
+          {this.props.insuredAssets.map((asset) => (
+            <ViewInsuredAssetsItems key={asset.id} asset={asset} />
+          ))}
+        </div>
+      </div>)
 
   }
 }
@@ -15,7 +21,7 @@ class ViewInsuredAssets extends Component {
 //PropTypes
 ViewInsuredAssets.propTypes = {
   insuredAssets: PropTypes.array.isRequired,
-//   selectedAsset: PropTypes.func.isRequired
+  //   selectedAsset: PropTypes.func.isRequired
 }
 
 export default ViewInsuredAssets

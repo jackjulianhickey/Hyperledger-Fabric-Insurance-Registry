@@ -11,15 +11,35 @@ class ProcessClaim extends Component {
 
 
     render() {
-        console.log(this.props.Claim)
+        let assetStyle = {
+            divNotHover: {
+              display: 'inline-block',
+              background: '#333',
+              width: '500px',
+              height: '200px',
+              textAlign: 'left',
+              padding: '20px',
+              margin: '20px',
+              border: '5px solid #333',
+              color: 'white'
+            },
+            button: {
+              padding: '3px',
+              margin: '3px',
+              cursor: 'pointer',
+              fontSize: '16px'
+            }
+      
+          }
+        
         return (
-            <div>
+            <div style = { assetStyle.divNotHover }>
                 <p>Asset Type: {this.props.Claim.assetType}</p>
                 <p>Asset Value: {this.props.Claim.totalValue}</p>
                 <p>Claim Value: {this.props.Claim.claimValue}</p>
                 <p>Claim Description: {this.props.Claim.description}</p>
-                <button onClick={this.handleButton} value="accepted">Accept</button>
-                <button onClick={this.handleButton} value="denied">Reject</button>
+                <button style = { assetStyle.button} onClick={this.handleButton} value="accepted">Accept</button>
+                <button style = { assetStyle.button} onClick={this.handleButton} value="denied">Reject</button>
             </div>
         );
     }

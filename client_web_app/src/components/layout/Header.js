@@ -7,8 +7,7 @@ class Header extends Component {
     return (
       <header style={headerStyle}>
         <h1 style={titleStyle}>Blockchain Verfied Insurance</h1>
-        <Link style={linkStyle} to="/">Home</Link> | <Link style={linkStyle} to="/addAsset">New Asset</Link> | <Link
-        style={linkStyle} to="/claims">Claims</Link> | <Link style={linkStyle} to="/viewoffers">View Offers</Link>
+        <Link style={linkStyle} to="/">Home</Link> | <Link style={linkStyle} to="/viewoffers">View Offers</Link>
       </header>
     )
   }

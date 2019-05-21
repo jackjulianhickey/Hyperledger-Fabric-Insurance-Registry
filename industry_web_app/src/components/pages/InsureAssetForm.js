@@ -6,8 +6,8 @@ class InsureAssetForm extends Component{
 
   render() {
     return (
-      <form onSubmit={this.props.onSubmit} style={{ display: 'block', background: '#5B5B5B' }}>
-        <div>
+      <form onSubmit={this.props.onSubmit} style={{ display: 'block', background: '#333' }}>
+        {/* <div>
           <input
             type={"text"}
             name={"privateIndividual"}
@@ -24,13 +24,21 @@ class InsureAssetForm extends Component{
             placeholder={this.props.asset.id}
             value={this.props.privateAsset}
             onChange={this.props.onChange}/>
-        </div>
+        </div> */}
         <div>
           <input
             type="submit"
-            value="Submit"
+            value="Insure Asset"
             className="btn"
-            style={{flex: '1', background: '#333', marginLeft: '50%'}}
+            style={{ flex: '1',
+            background: 'white',
+            color: 'black',
+            borderRadius: '4px',
+            padding: '3px',
+            margin: '3px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            marginLeft: '80%'}}
           />
         </div>
       </form>
@@ -40,7 +48,7 @@ class InsureAssetForm extends Component{
 }
 
 const blogStyle = {
-  marginTop: '10px',
+  // marginTop: '10px',
   marginLeft: '10px',
   width: '50%',
   overflowY: 'auto'
@@ -49,7 +57,7 @@ const blogStyle = {
 
 const titleStyle = {
   textAlign: 'left',
-  marginTop: '10px',
+  // marginTop: '10px',
   marginLeft: '10px',
   padding: '10px',
   width: '50%'

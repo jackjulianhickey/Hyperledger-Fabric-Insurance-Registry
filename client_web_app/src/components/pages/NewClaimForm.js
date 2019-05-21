@@ -22,7 +22,7 @@ class NewClaimForm extends Component {
     render() {
 
         return (
-            <form onSubmit={this.props.onSubmit} style={{ display: 'block', background: '#5B5B5B' }}>
+            <form onSubmit={this.props.onSubmit} style={{ display: 'block', background: '#333',  margin: '10px', padding: '10px' }}>
                 <div>
                     <select
                         type={"text"}
@@ -57,7 +57,15 @@ class NewClaimForm extends Component {
                         type="submit"
                         value="Submit"
                         className="btn"
-                        style={{ flex: '1', background: '#333', marginLeft: '50%' }}
+                        style={{ flex: '1',
+                        background: 'white',
+                        color: 'black',
+                        borderRadius: '4px',
+                        padding: '3px',
+                        margin: '3px',
+                        cursor: 'pointer',
+                        fontSize: '16px',
+                        marginLeft: '80%'}}
                     />
                 </div>
             </form>
@@ -76,11 +84,12 @@ const blogStyle = {
 }
 
 const titleStyle = {
+    fontFamily: 'Arial, Helvetica, sans-serif',
     textAlign: 'left',
     marginTop: '10px',
     marginLeft: '10px',
     padding: '10px',
-    width: '50%'
+    width: '80%'
 }
 //PropTypes
 NewClaimForm.propTypes = {

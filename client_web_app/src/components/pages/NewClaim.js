@@ -18,15 +18,18 @@ class NewClaim extends Component {
     }
 
     onChange = (e) => {
-        
+
         this.setState({ [e.target.name]: e.target.value });
     }
 
 
     render() {
         return (
-            <NewClaimForm onSubmit={this.onSubmit} onChange={this.onChange}
-                description={this.state.description} value={this.state.value} asset={this.state.asset} userassets={this.props.assets} />
+            <div >
+                <h1>New Claim</h1>
+                <NewClaimForm onSubmit={this.onSubmit} onChange={this.onChange}
+                    description={this.state.description} value={this.state.value} asset={this.state.asset} userassets={this.props.assets} />
+            </div>
         );
     }
 

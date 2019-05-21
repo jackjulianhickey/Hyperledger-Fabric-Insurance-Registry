@@ -14,8 +14,10 @@ function sleep(ms) {
 async function makeInsuranceOffer(insurance) {
     let assetRegistry = await getAssetRegistry('org.acme.insuranceregistry.InsuranceOffer');
 
+    num_id = (Math.floor(Math.random() * ( 999999 - 100000) + 100000)).toString(10)
+
     var factory = getFactory()
-    var insuranceId = insurance.privateIndividual.id + '' + insurance.insuranceCompany.id + '' + insurance.privateAsset.id
+    var insuranceId = insurance.privateIndividual.id + '' + num_id
     var insuranceOfferAsset = factory.newResource('org.acme.insuranceregistry', 'InsuranceOffer', insuranceId)
     insuranceOfferAsset.privateIndividual = insurance.privateIndividual
     insuranceOfferAsset.insuranceCompany = insurance.insuranceCompany
@@ -48,6 +50,7 @@ async function acceptInsuranceOffer(offer) {
     }
     offer.offer.privateIndividual.balance -= costToDebit
     offer.offer.insuranceCompany.balance += costToDebit
+    offer.offer.insuranceCompany.insuranceContracts += 1
     offer.offer.status = "accepted";
     offer.offer.privateAsset.status = "insured";
 
@@ -97,9 +100,27 @@ async function riskAnalysis(asset) {
         score += 4
     }
 
-    if (asset.privateAsset.value < 10000) {
+    if (asset.privateAsset.description == 'Phone') {
+        score +=2
+    }
+
+    if (asset.privateAsset.description == 'House') {
+        score +=3
+    }
+
+    if (asset.privateAsset.description == 'Car') {
+        score +=2
+    }
+
+    if (asset.privateAsset.value < 10000.0) {
+        // return new Error(asset.privateAsset.value)
         score += 1
     }
+
+    if (asset.privateAsset.value < 1000.0) {
+        score += 1
+    }
+    // return new Error("made it to the end ", asset.privateAsset.value)
 
     asset.privateAsset.riskAnalysisScore = score
 
@@ -116,7 +137,9 @@ async function createNewAsset(asset) {
     let assetRegistry = await getAssetRegistry('org.acme.insuranceregistry.PrivateAsset');
     var factory = getFactory()
 
-    var assetID = asset.privateIndividual.id + asset.description;
+    num_id = (Math.floor(Math.random() * ( 999999 - 100000) + 100000)).toString(10)
+
+    var assetID = asset.privateIndividual.id + num_id;
     var newAsset = factory.newResource('org.acme.insuranceregistry', 'PrivateAsset', assetID)
     newAsset.privateIndividual = asset.privateIndividual;
     newAsset.description = asset.description;
@@ -138,12 +161,14 @@ async function makeClaim(claim) {
 
     await sleep(2000);
 
+    num_id = (Math.floor(Math.random() * ( 999999 - 100000) + 100000)).toString(10)
+
     // throw new Error(assetInsuranceOffer[0].insuranceCompany)
 
     let assetRegistry = await getAssetRegistry('org.acme.insuranceregistry.Claim');
 
     var factory = getFactory()
-    var claimId = claim.privateIndividual.id + '' + claim.privateAsset.id + '' + claim.claimValue
+    var claimId = claim.privateIndividual.id + '' + num_id
     var newClaim = factory.newResource('org.acme.insuranceregistry', 'Claim', claimId)
     newClaim.privateIndividual = claim.privateIndividual
     newClaim.privateAsset = claim.privateAsset

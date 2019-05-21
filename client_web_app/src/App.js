@@ -7,6 +7,7 @@ import Homepage from './components/pages/Homepage'
 import AddAsset from './components/pages/AddAsset'
 import ViewOffers from './components/pages/ViewOffers'
 import NewClaim from './components/pages/NewClaim'
+import ViewAsset from './components/pages/ViewAsset'
 
 class App extends Component {
 
@@ -15,11 +16,13 @@ class App extends Component {
     user: {},
     privates: [],
     assets: [],
+    numAssets: 0,
     openAssets: [],
     offers: [],
     insuredItems: [],
     claims: [],
-    login: true
+    login: true,
+    selectedAsset: {}
   }
 
   componentWillMount = () => {
@@ -49,6 +52,9 @@ class App extends Component {
         this.setState({
           assets: data
         })
+        this.setState({
+          numAssets: this.state.assets.length
+        })
         for (let i = 0; i < this.state.assets.length; i++) {
 
           let privateIndividual = this.state.assets[i].privateIndividual.split('#')[1]
@@ -61,11 +67,24 @@ class App extends Component {
                 assets
               })
             })
+            if ( this.state.assets[i].status == "open" ) {
+              this.riskAnalysis(this.state.assets[i])
+            }
         }
         this.getOffers()
       })
   }
 
+
+  riskAnalysis = (asset) => {
+    console.log(asset.id)
+    const data = {
+      "$class": "org.acme.insuranceregistry.RiskAnalysis",
+      "privateAsset": "org.acme.insuranceregistry.PrivateAsset#" + asset.id
+    }
+
+    Client.create('RiskAnalysis', data)
+  }
   getClaims = () => {
     Client.search('queries/selectClaimsByPrivateIndividual?privateIndividual=resource%3Aorg.acme.insuranceregistry.PrivateIndividual%23' + this.state.name)
       .then(data => {
@@ -125,6 +144,19 @@ class App extends Component {
       }
     }
     this.getInsuredItems();
+  }
+
+  selectedAsset = async (assetID) => {
+    console.log(assetID)
+    for (let i = 0; i < this.state.assets.length; i++) {
+      console.log(this.state.assets[i].id)
+      if (this.state.assets[i].id === assetID) {
+        await this.setState({ selectedAsset: this.state.assets[i] })
+        console.log(this.state.selectedAsset)
+        break;
+      }
+    }
+
   }
 
   getInsuredItems = () => {
@@ -251,7 +283,9 @@ class App extends Component {
             <Route exact path={"/"} render={props => (
               <React.Fragment>
                 <h1>My Assets</h1>
-                <Homepage assets={this.state.assets} user = {this.state.user}/>
+                <Homepage assets={this.state.assets} user = {this.state.user} numAssets = {this.state.numAssets} 
+                addAsset={this.addAsset} insuredAssets={this.state.insuredItems} newClaim={this.createNewClaim}
+                selectedAsset={this.selectedAsset}/>
               </React.Fragment>
             )} />
             <Route path={"/addAsset"} render={props => (
@@ -267,6 +301,11 @@ class App extends Component {
             <Route path={"/claims"} render={props => (
               <React.Fragment>
                 <NewClaim assets={this.state.insuredItems} newClaim={this.createNewClaim} />
+              </React.Fragment>
+            )} />
+            <Route path={"/viewasset"} render={props => (
+              <React.Fragment>
+                <ViewAsset selectedAsset={this.state.selectedAsset} />
               </React.Fragment>
             )} />
           </div>

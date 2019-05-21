@@ -3,7 +3,7 @@ import AddAssetForm from './AddAssetForm'
 import PropTypes from 'prop-types';
 
 
-class AddAsset extends Component{
+class AddAsset extends Component {
   state = {
     description: '',
     value: '',
@@ -13,7 +13,7 @@ class AddAsset extends Component{
   onSubmit = (e) => {
     e.preventDefault();
     this.props.addAsset(this.state.description, this.state.value, this.state.durationInMonths);
-    this.setState({ description: '', value: '' , durationInMonths: ''});
+    this.setState({ description: '', value: '', durationInMonths: '' });
   }
 
   onChange = (e) => {
@@ -23,7 +23,10 @@ class AddAsset extends Component{
 
   render() {
     return (
-      <AddAssetForm onSubmit = {this.onSubmit} onChange = {this.onChange} description = {this.state.description} value = {this.state.value} durationInMonths = {this.state.durationInMonths}/>
+      <div>
+      <h1>Add New Asset</h1>
+        <AddAssetForm onSubmit={this.onSubmit} onChange={this.onChange} description={this.state.description} value={this.state.value} durationInMonths={this.state.durationInMonths} />
+      </div>
     );
   }
 
@@ -33,7 +36,7 @@ const blogStyle = {
   textAlign: 'left',
   marginTop: '10px',
   padding: '10px',
-  width: '50%',
+  width: '30%',
   height: '500px'
 }
 

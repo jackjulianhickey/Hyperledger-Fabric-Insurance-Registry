@@ -4,22 +4,21 @@ import { Link } from "react-router-dom";
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 
 class Profile extends Component {
-
-  getStyle = () => {
-    return {
-      background: '#5B5B5B',
-      padding: '15px',
-      borderBottom: '1px #000000 solid',
+  render() {
+    let profileStyle = {
+      background: '#333',
+      width: '300px',
+      padding: '20px',
+      margin: '20px',
+      border: '5px solid #333',
       color: 'white'
-    }
 
   }
-
-  render() {
     return (
-        <div>
+        <div style = { profileStyle }>
             <p>Name: {this.props.user.name}</p>
-            <p>Your Balance: {this.props.user.balance}</p>
+            <p>Balance: {this.props.user.balance}</p>
+            <p>Assets: {this.props.numAssets}</p>
         </div>
      
     )
@@ -29,7 +28,8 @@ class Profile extends Component {
 
 //PropTypes
 Profile.propTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  numAssets: PropTypes.number.isRequired,
 }
 
 export default Profile
